@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { ChatContext } from '../context/ChatContext'
-
+import { signInWithEmailAndPassword } from "firebase/auth";
+import {auth} from "../firebase"
 
 const Message = ({message,key}) => {
   const {currentUser}=useContext(AuthContext)
@@ -14,18 +15,25 @@ const Message = ({message,key}) => {
     ref.current?.scrollIntoView({behavior:"smooth"})
   },[message])
 
-  const handleClick=()=>{
-    console.log(currentUser)
+  const handleClick=async ()=>{
+    // console.log(currentUser)
     if(message.senderId !== currentUser.uid)
     {
+      const password = window.prompt('Please enter your password:');
+      try{
+        await signInWithEmailAndPassword(auth, currentUser.email, password)
         steganography.decode(message.img)
-      .then((originalMessage) => {
-        alert('Original Message: ' + originalMessage);
-        console.log('Original Message:', originalMessage);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+        .then((originalMessage) => {
+          alert('Original Message: ' + originalMessage);
+          // console.log('Original Message:', originalMessage);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+       }
+       catch(err){
+        alert('Wrong Password!!');
+       }
     }
   }
   return (
