@@ -3,8 +3,6 @@ import Message from './Message.jsx';
 import { ChatContext } from '../context/ChatContext.js';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase.js';
-import { signInWithEmailAndPassword } from "firebase/auth";
-import {auth} from "../firebase"
 
 const Messages = () => {
   const [messages, setMessages] = useState([]);
